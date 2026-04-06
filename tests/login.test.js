@@ -1,6 +1,6 @@
 require("dotenv").config();
 const allureReporter = require("@wdio/allure-reporter").default;
-const helpers = require("../helpers");
+const helpers = require("../utils/helpers");
 const loginWallPage = require("../pages/loginWallPage");
 const loginPage = require("../pages/loginPage");
 const forsidePage = require("../pages/forsidePage");

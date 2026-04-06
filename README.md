@@ -59,6 +59,8 @@ adb devices
 
 You should see your device listed.
 
+If you switch to another Android device or emulator, update the `appium:udid` value in `wdio.config.js` with the new device ID from `adb devices`. If using a different app build, also update `appium:appPackage` and `appium:appActivity` as needed.
+
 ---
 
 ## Project Setup
@@ -101,13 +103,25 @@ npm test
 
 ## Viewing Reports
 
-After the test suite has finished, generate and open the Allure HTML report:
+After the test suite has finished, generate the Allure HTML report:
 
 ```bash
-npm run report
+npm run report:generate
 ```
 
-This will open a browser window with a full report including test steps, durations, and environment info. The report is regenerated fresh on every run.
+Then open `allure-report/index.html` in a browser to view the latest report.
+
+### Publishing reports with history
+
+Run:
+
+```bash
+npm run testSuite
+```
+
+This runs the full test suite, generates the report, merges history from previous runs, and publishes it to GitHub Pages at:
+
+https://hige-tv2.github.io/appium-tests/#
 
 ---
 
@@ -122,8 +136,7 @@ This will open a browser window with a full report including test steps, duratio
 ├── tests/                  # Test files
 │   └── login.test.js       # Login and logout flow
 ├── utils/
-│   └── driver.js           # Appium capabilities
-├── helpers.js              # Reusable helper functions
+│   └── helpers.js          # Reusable helper functions
 ├── wdio.config.js          # WebdriverIO configuration and test runner
 ├── .env                    # Credentials (not committed)
 └── package.json
@@ -135,13 +148,3 @@ This will open a browser window with a full report including test steps, duratio
 
 - **Package:** `dk.tv2.nyhedscenter`
 - **Launcher Activity:** `dk.tv2.nyhedscenter.LauncherActivity`
-
----
-
-## Notes
-
-- Tests run with a full app reset (`noReset` disabled), meaning the app starts fresh every run — cookies, region selection, and appearance popups will appear and are handled automatically.
-- Each test is independent and handles its own login/logout cycle.
-- The notification permission dialog is accepted on first run — Android will not ask again until the app is reset.
-- The `allure-results` folder is wiped automatically at the start of each test run, so reports always reflect the latest run only.
-- Device information (model, Android version) is detected automatically via ADB and included in the report environment panel.
