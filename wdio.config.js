@@ -44,43 +44,38 @@ exports.config = {
   ],
 
   onPrepare: function () {
-    const rawModel = execSync("adb shell getprop ro.product.model")
-      .toString()
-      .trim();
-    const deviceModel = MODEL_NAMES[rawModel] || rawModel;
-    const androidVersion = execSync(
-      "adb shell getprop ro.build.version.release",
-    )
-      .toString()
-      .trim();
+    let deviceModel = "Unknown Device";
+    let androidVersion = "Unknown";
 
-    const content = `Device=${deviceModel}
-Platform=Android ${androidVersion}
-App=TV2 Nyheder
-Package=dk.tv2.nyhedscenter`;
-
-    // Selective cleanup: Keep the history, delete the rest
-    if (fs.existsSync("allure-results")) {
-      const files = fs.readdirSync("allure-results");
-      files.forEach((file) => {
-        if (file !== "history") {
-          fs.rmSync(`allure-results/${file}`, { recursive: true, force: true });
-        }
-      });
-    } else {
-      fs.mkdirSync("allure-results", { recursive: true });
+    try {
+      const rawModel = execSync("adb shell getprop ro.product.model", {
+        stdio: "pipe",
+      })
+        .toString()
+        .trim();
+      deviceModel = MODEL_NAMES[rawModel] || rawModel;
+      androidVersion = execSync("adb shell getprop ro.build.version.release", {
+        stdio: "pipe",
+      })
+        .toString()
+        .trim();
+    } catch (e) {
+      console.warn("⚠️ No device detected via ADB. Using placeholders.");
     }
 
-    // Create executor to please Allure
+    const content = `Device=${deviceModel}\nPlatform=Android ${androidVersion}\nApp=TV2 Nyheder\nPackage=dk.tv2.nyhedscenter`;
+
+    // No wipe here — the testSuite script manages allure-results cleanup
+    fs.mkdirSync("allure-results", { recursive: true });
+
+    fs.writeFileSync("allure-results/environment.properties", content);
+
     const executor = {
       name: "Local Machine",
       type: "local",
       buildName: `Run ${new Date().toLocaleString()}`,
     };
     fs.writeFileSync("allure-results/executor.json", JSON.stringify(executor));
-
-    // Create environment.properties for the new run
-    fs.writeFileSync("allure-results/environment.properties", content);
   },
 
   afterTest: async function (test, context, { error, passed }) {
