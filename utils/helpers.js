@@ -30,35 +30,45 @@ async function pressEnterKey(driver) {
   await driver.pause(500);
 }
 
-async function acceptCookies(driver) {
+async function acceptCookies(driver, timeout = 1500) {
   try {
     const btn = await driver.$(
       'android=new UiSelector().resourceId("dk.tv2.nyhedscenter:id/btn_accept_cookies")',
     );
-    await btn.waitForDisplayed({ timeout: 5000 });
+    await btn.waitForDisplayed({ timeout });
     await btn.click();
   } catch (e) {
     // Cookie popup didn't appear
   }
 }
 
-async function dismissRegionSelection(driver) {
+async function dismissRegionSelection(driver, timeout = 1500) {
   try {
     const btn = await driver.$('android=new UiSelector().text("Ikke nu")');
-    await btn.waitForDisplayed({ timeout: 5000 });
+    await btn.waitForDisplayed({ timeout });
     await btn.click();
   } catch (e) {
     // Region popup didn't appear
   }
 }
 
-async function dismissAppearanceSelection(driver) {
+async function dismissAppearanceSelection(driver, timeout = 1500) {
   try {
     const btn = await driver.$('android=new UiSelector().text("Gem udseende")');
-    await btn.waitForDisplayed({ timeout: 5000 });
+    await btn.waitForDisplayed({ timeout });
     await btn.click();
   } catch (e) {
     // Appearance popup didn't appear
+  }
+}
+
+async function dismissBlockingPopups(driver, attempts = 2) {
+  for (let i = 0; i < attempts; i += 1) {
+    await acceptCookies(driver, 1200);
+    await dismissRegionSelection(driver, 1200);
+    await dismissAppearanceSelection(driver, 1200);
+    await dismissSavePasswordPopup(driver);
+    await driver.pause(250);
   }
 }
 
@@ -70,4 +80,5 @@ module.exports = {
   acceptCookies,
   dismissRegionSelection,
   dismissAppearanceSelection,
+  dismissBlockingPopups,
 };

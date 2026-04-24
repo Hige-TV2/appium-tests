@@ -1,8 +1,7 @@
 require("dotenv").config();
 const allureReporter = require("@wdio/allure-reporter").default;
 const helpers = require("../utils/helpers");
-const loginWallPage = require("../pages/loginWallPage");
-const loginPage = require("../pages/loginPage");
+const authHelper = require("../utils/authHelper");
 const forsidePage = require("../pages/forsidePage");
 const minSidePage = require("../pages/minSidePage");
 
@@ -15,38 +14,8 @@ describe("Authentication", () => {
     await helpers.dismissNotificationPermission(browser);
     allureReporter.endStep("passed");
 
-    allureReporter.startStep("Tap log ind");
-    await loginWallPage.tapLogInd(browser);
-    allureReporter.endStep("passed");
-
-    allureReporter.startStep("Enter credentials");
-    await loginPage.enterEmail(browser, process.env.TV2_EMAIL);
-    await loginPage.enterPassword(browser, process.env.TV2_PASSWORD);
-    await helpers.pressEnterKey(browser);
-    allureReporter.endStep("passed");
-
-    allureReporter.startStep("Accept cookie consent");
-    const cookiePopup = await browser.$(
-      'android=new UiSelector().resourceId("dk.tv2.nyhedscenter:id/btn_accept_cookies")',
-    );
-    await cookiePopup.waitForDisplayed({ timeout: 5000 });
-    await helpers.acceptCookies(browser);
-    allureReporter.endStep("passed");
-
-    allureReporter.startStep("Dismiss region selection");
-    const regionPopup = await browser.$(
-      'android=new UiSelector().text("Ikke nu")',
-    );
-    await regionPopup.waitForDisplayed({ timeout: 5000 });
-    await helpers.dismissRegionSelection(browser);
-    allureReporter.endStep("passed");
-
-    allureReporter.startStep("Dismiss appearance selection");
-    const appearancePopup = await browser.$(
-      'android=new UiSelector().text("Gem udseende")',
-    );
-    await appearancePopup.waitForDisplayed({ timeout: 5000 });
-    await helpers.dismissAppearanceSelection(browser);
+    allureReporter.startStep("Login to frontpage");
+    await authHelper.loginToFrontpage(browser);
     allureReporter.endStep("passed");
 
     allureReporter.startStep("Verify home screen");

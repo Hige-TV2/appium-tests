@@ -12,9 +12,11 @@ exports.config = {
   hostname: "localhost",
   port: 4723,
   logLevel: "error",
+  maxInstances: 1,
 
   capabilities: [
     {
+      maxInstances: 1,
       platformName: "Android",
       "appium:automationName": "UiAutomator2",
       "appium:udid": "adb-R5CNC0GCYCM-81cpHg._adb-tls-connect._tcp",
@@ -80,7 +82,11 @@ exports.config = {
 
   afterTest: async function (test, context, { error, passed }) {
     if (!passed) {
-      await browser.takeScreenshot(); // auto-attaches to Allure report
+      try {
+        await browser.takeScreenshot(); // auto-attaches to Allure report
+      } catch (e) {
+        // Session may be gone after a crash; avoid masking original test error.
+      }
     }
   },
 };
