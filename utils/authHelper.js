@@ -33,13 +33,13 @@ async function waitForAnyDisplayed(driver, selectors, timeout, timeoutMsg) {
     },
     {
       timeout,
-      interval: 500,
+      interval: 350,
       timeoutMsg,
     },
   );
 }
 
-async function isLoggedIn(driver, timeout = 3000) {
+async function isLoggedIn(driver, timeout = 2500) {
   try {
     await waitForAnyDisplayed(
       driver,
@@ -70,7 +70,7 @@ async function loginToFrontpage(driver) {
     const loginWallBtn = await driver.$(
       `android=${LOGIN_WALL_BUTTON_SELECTOR}`,
     );
-    await loginWallBtn.waitForDisplayed({ timeout: 3000 });
+    await loginWallBtn.waitForDisplayed({ timeout: 2500 });
     await loginWallPage.tapLogInd(driver);
   } catch (e) {
     // Login wall may not be visible if app already routed elsewhere
@@ -79,7 +79,7 @@ async function loginToFrontpage(driver) {
   // Wait for email field to appear (we're now on the login form after tapping login wall)
   try {
     const emailField = await driver.$(`android=${EMAIL_FIELD_SELECTOR}`);
-    await emailField.waitForDisplayed({ timeout: 5000 });
+    await emailField.waitForDisplayed({ timeout: 4000 });
     await loginPage.enterEmail(driver, process.env.TV2_EMAIL);
     await loginPage.enterPassword(driver, process.env.TV2_PASSWORD);
     await helpers.pressEnterKey(driver);
@@ -90,11 +90,11 @@ async function loginToFrontpage(driver) {
   await driver.waitUntil(
     async () => {
       await helpers.dismissBlockingPopups(driver, 1);
-      return isLoggedIn(driver, 1000);
+      return isLoggedIn(driver, 900);
     },
     {
-      timeout: 15000,
-      interval: 500,
+      timeout: 12000,
+      interval: 400,
       timeoutMsg: "Unable to reach frontpage after login and popup handling",
     },
   );

@@ -75,14 +75,14 @@ class SektionerPage {
     throw new Error(`Section not visible: ${sectionName}`);
   }
 
-  async scrollToSection(driver, sectionName, timeout = 10000) {
+  async scrollToSection(driver, sectionName, timeout = 8000) {
     const safeText = sectionName.replace(/"/g, '\\"');
 
     try {
       const element = await driver.$(
         `android=new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().text("${safeText}"))`,
       );
-      await element.waitForDisplayed({ timeout: 3000 });
+      await element.waitForDisplayed({ timeout: 2500 });
       return element;
     } catch (e) {
       // fallback to manual forward scroll loop
@@ -108,7 +108,7 @@ class SektionerPage {
         selector:
           "new UiScrollable(new UiSelector().scrollable(true)).scrollForward()",
       });
-      await driver.pause(250);
+      await driver.pause(180);
     }
 
     throw new Error(`Could not scroll section into view: ${sectionName}`);
@@ -135,13 +135,13 @@ class SektionerPage {
         selector:
           "new UiScrollable(new UiSelector().scrollable(true)).scrollBackward()",
       });
-      await driver.pause(250);
+      await driver.pause(180);
     }
 
     // After max attempts, just proceed - we likely can't scroll further
   }
 
-  async ensureSectionVisible(driver, sectionName, timeout = 10000) {
+  async ensureSectionVisible(driver, sectionName, timeout = 8000) {
     try {
       return await this.waitForSectionVisible(driver, sectionName, 3000);
     } catch (e) {
@@ -149,12 +149,12 @@ class SektionerPage {
     }
   }
 
-  async tapSection(driver, sectionName, timeout = 10000) {
+  async tapSection(driver, sectionName, timeout = 8000) {
     try {
       const scopedElement = await driver.$(
         this.getSectionInListXPath(sectionName),
       );
-      await scopedElement.waitForDisplayed({ timeout: 3000 });
+      await scopedElement.waitForDisplayed({ timeout: 2500 });
       await scopedElement.click();
       return;
     } catch (e) {
@@ -169,7 +169,7 @@ class SektionerPage {
     await section.click();
   }
 
-  async waitForSectionDetailTitle(driver, sectionName, timeout = 6000) {
+  async waitForSectionDetailTitle(driver, sectionName, timeout = 5000) {
     const selectors = [
       `new UiSelector().text("${sectionName}").instance(3)`,
       `new UiSelector().text("${sectionName}").instance(2)`,
@@ -193,7 +193,7 @@ class SektionerPage {
     );
   }
 
-  async waitForAnyArticleSignal(driver, timeout = 6000) {
+  async waitForAnyArticleSignal(driver, timeout = 5000) {
     await driver.waitUntil(
       async () => {
         try {
@@ -207,7 +207,7 @@ class SektionerPage {
       },
       {
         timeout,
-        interval: 400,
+        interval: 350,
         timeoutMsg: "No article-like content-desc signal found in section",
       },
     );

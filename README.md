@@ -128,18 +128,24 @@ https://hige-tv2.github.io/appium-tests/#
 ## Project Structure
 
 ```
-├── pages/                  # Page objects (one file per screen)
-│   ├── loginWallPage.js    # Login wall (first screen on fresh install)
-│   ├── loginPage.js        # Email/password login form
-│   ├── forsidePage.js      # Home screen
-│   └── minSidePage.js      # Profile/settings page
-├── tests/                  # Test files
-│   └── login.test.js       # Login and logout flow
-├── utils/
-│   └── helpers.js          # Reusable helper functions
-├── wdio.config.js          # WebdriverIO configuration and test runner
-├── .env                    # Credentials (not committed)
-└── package.json
+├── pages/                        # Page objects
+│   ├── forsidePage.js            # Bottom/top navigation helpers
+│   ├── loginPage.js              # Email/password form interactions
+│   ├── loginWallPage.js          # Login wall actions
+│   ├── minSidePage.js            # Profile/min side interactions
+│   ├── podcastPage.js            # Podcast tab selectors and checks
+│   └── sektionerPage.js          # Sektioner list scrolling and assertions
+├── tests/                        # Main automated suites
+│   ├── frontpage.test.js
+│   ├── login.test.js
+│   ├── podcast.test.js
+│   └── sektioner.test.js
+├── utils/                        # Shared support helpers
+│   ├── authHelper.js
+│   └── helpers.js
+├── wdio.config.js                # WebdriverIO runner configuration
+├── package.json                  # Scripts and dependencies
+└── README.md
 ```
 
 ---

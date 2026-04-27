@@ -20,12 +20,12 @@ describe("Authentication", () => {
 
     allureReporter.startStep("Verify home screen");
     const forside = await browser.$('android=new UiSelector().text("Forside")');
-    await forside.waitForDisplayed({ timeout: 10000 });
+    await forside.waitForDisplayed({ timeout: 7000 });
     allureReporter.endStep("passed");
 
     allureReporter.startStep("Logout");
     await forsidePage.tapProfilButton(browser);
-    await browser.pause(2000);
+    await browser.pause(1200);
     await browser.execute("mobile: scroll", {
       strategy: "-android uiautomator",
       selector:
@@ -38,7 +38,7 @@ describe("Authentication", () => {
     const loginWall = await browser.$(
       'android=new UiSelector().text("Log ind")',
     );
-    await loginWall.waitForDisplayed({ timeout: 10000 });
+    await loginWall.waitForDisplayed({ timeout: 7000 });
     allureReporter.endStep("passed");
   });
 });

@@ -54,7 +54,7 @@ describe("Frontpage Navigation", () => {
       allureReporter.endStep("passed");
 
       allureReporter.startStep(`Validate tab landing signal: ${tab}`);
-      const timeout = tab === "Podcast" ? 9000 : 5000;
+      const timeout = tab === "Podcast" ? 8000 : 5000;
       await forsidePage.waitForBottomTabLandingSignal(browser, tab, timeout);
       allureReporter.endStep("passed");
     }

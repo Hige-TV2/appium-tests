@@ -1,7 +1,7 @@
 async function dismissNotificationPermission(driver) {
   try {
     const denyBtn = await driver.$('android=new UiSelector().text("Allow")');
-    await denyBtn.waitForDisplayed({ timeout: 3000 });
+    await denyBtn.waitForDisplayed({ timeout: 1800 });
     await denyBtn.click();
   } catch (e) {
     // Dialog didn't appear, that's fine
@@ -13,7 +13,7 @@ async function dismissSavePasswordPopup(driver) {
     const popup = await driver.$(
       'android=new UiSelector().textContains("Use saved password")',
     );
-    await popup.waitForDisplayed({ timeout: 3000 });
+    await popup.waitForDisplayed({ timeout: 1800 });
     await driver.pressKeyCode(4);
   } catch (e) {
     // Popup didn't appear, that's fine
@@ -22,12 +22,12 @@ async function dismissSavePasswordPopup(driver) {
 
 async function pressBackButton(driver) {
   await driver.pressKeyCode(4);
-  await driver.pause(500);
+  await driver.pause(250);
 }
 
 async function pressEnterKey(driver) {
   await driver.pressKeyCode(66); // 66 = Enter key
-  await driver.pause(500);
+  await driver.pause(250);
 }
 
 async function acceptCookies(driver, timeout = 1500) {
@@ -64,11 +64,11 @@ async function dismissAppearanceSelection(driver, timeout = 1500) {
 
 async function dismissBlockingPopups(driver, attempts = 2) {
   for (let i = 0; i < attempts; i += 1) {
-    await acceptCookies(driver, 1200);
-    await dismissRegionSelection(driver, 1200);
-    await dismissAppearanceSelection(driver, 1200);
+    await acceptCookies(driver, 900);
+    await dismissRegionSelection(driver, 900);
+    await dismissAppearanceSelection(driver, 900);
     await dismissSavePasswordPopup(driver);
-    await driver.pause(250);
+    await driver.pause(150);
   }
 }
 
