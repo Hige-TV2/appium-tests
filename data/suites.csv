@@ -1,2 +1,7 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","19388","should login and logout successfully","Authentication","2026-04-06","passed","2026-04-06","","","",""
+"","31815","should show and allow tapping expected top navigation tabs","Frontpage Navigation","2026-04-27","passed","2026-04-27","","","",""
+"","77475","should open selected sections and validate destination","Sektioner","2026-04-27","passed","2026-04-27","","","",""
+"","42367","should login and logout successfully","Authentication","2026-04-27","passed","2026-04-27","","","",""
+"","36518","should show all expected bottom navigation items","Frontpage Navigation","2026-04-27","passed","2026-04-27","","","",""
+"","38406","should validate fixed sections and scroll sections","Sektioner","2026-04-27","passed","2026-04-27","","","",""
+"","31492","should navigate to each bottom tab and show tab-specific content","Frontpage Navigation","2026-04-27","passed","2026-04-27","","","",""
