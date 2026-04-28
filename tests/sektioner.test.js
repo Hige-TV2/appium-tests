@@ -1,24 +1,18 @@
 require("dotenv").config();
 const allureReporter = require("@wdio/allure-reporter").default;
-const authHelper = require("../utils/authHelper");
+const testSetup = require("../utils/testSetup");
 const helpers = require("../utils/helpers");
-const forsidePage = require("../pages/forsidePage");
 const sektionerPage = require("../pages/sektionerPage");
 
 describe("Sektioner", function () {
   this.timeout(90000);
 
   beforeEach(async () => {
-    try {
-      await authHelper.loginToFrontpage(browser);
-    } catch (e) {
-      await helpers.dismissBlockingPopups(browser, 2);
-      await browser.pause(500);
-      await authHelper.loginToFrontpage(browser);
-    }
-
-    await forsidePage.tapBottomNavItem(browser, "Sektioner", 3000);
-    await forsidePage.waitForBottomTabLandingSignal(browser, "Sektioner", 5000);
+    await testSetup.loginToFrontpageWithRecovery(browser);
+    await testSetup.openBottomTabAndWait(browser, "Sektioner", {
+      tapTimeout: 3000,
+      landingTimeout: 5000,
+    });
     await sektionerPage.waitForSectionListContainer(browser, 6000);
   });
 

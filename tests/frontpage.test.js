@@ -1,11 +1,11 @@
 require("dotenv").config();
 const allureReporter = require("@wdio/allure-reporter").default;
-const authHelper = require("../utils/authHelper");
+const testSetup = require("../utils/testSetup");
 const forsidePage = require("../pages/forsidePage");
 
 describe("Frontpage Navigation", () => {
   beforeEach(async () => {
-    await authHelper.loginToFrontpage(browser);
+    await testSetup.loginToFrontpageWithRecovery(browser);
   });
 
   it("should show all expected bottom navigation items", async () => {

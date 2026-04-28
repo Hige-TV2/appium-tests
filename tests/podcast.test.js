@@ -1,7 +1,6 @@
 require("dotenv").config();
 const allureReporter = require("@wdio/allure-reporter").default;
-const authHelper = require("../utils/authHelper");
-const helpers = require("../utils/helpers");
+const testSetup = require("../utils/testSetup");
 const forsidePage = require("../pages/forsidePage");
 const podcastPage = require("../pages/podcastPage");
 
@@ -9,15 +8,7 @@ describe("Podcast", function () {
   this.timeout(90000);
 
   beforeEach(async () => {
-    try {
-      await authHelper.loginToFrontpage(browser);
-    } catch (e) {
-      await helpers.dismissBlockingPopups(browser, 2);
-      await browser.pause(500);
-      await authHelper.loginToFrontpage(browser);
-    }
-
-    await helpers.dismissBlockingPopups(browser, 1);
+    await testSetup.loginToFrontpageWithRecovery(browser);
   });
 
   it("should validate podcast landing content", async () => {

@@ -1,7 +1,6 @@
 require("dotenv").config();
 const allureReporter = require("@wdio/allure-reporter").default;
-const helpers = require("../utils/helpers");
-const authHelper = require("../utils/authHelper");
+const testSetup = require("../utils/testSetup");
 const forsidePage = require("../pages/forsidePage");
 const minSidePage = require("../pages/minSidePage");
 
@@ -10,12 +9,8 @@ describe("Authentication", () => {
     allureReporter.addFeature("Authentication");
     allureReporter.addStory("Login and Logout");
 
-    allureReporter.startStep("Dismiss notification permission");
-    await helpers.dismissNotificationPermission(browser);
-    allureReporter.endStep("passed");
-
     allureReporter.startStep("Login to frontpage");
-    await authHelper.loginToFrontpage(browser);
+    await testSetup.loginToFrontpageWithRecovery(browser);
     allureReporter.endStep("passed");
 
     allureReporter.startStep("Verify home screen");
